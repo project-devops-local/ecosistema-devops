@@ -1,0 +1,3 @@
+sonarWebContext: /sonarqube
+image:
+  tag: 9.9.2-community

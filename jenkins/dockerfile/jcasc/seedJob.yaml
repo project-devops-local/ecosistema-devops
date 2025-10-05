@@ -1,0 +1,27 @@
+jobs:
+  - script: |
+      folder('JenkinsConfig') {
+          displayName('JenkinsConfig')
+          description('Folder to store Jenkins Configuration Jobs')
+      }
+
+      pipelineJob('JenkinsConfig/devops-jenkins-jobs') {
+          displayName('devops-jenkins-jobs')
+          definition {
+              cpsScm {
+                  scm {
+                      git {
+                          branch('master')
+                          remote{
+                              credentials('git-creds-devops')
+                              url('https://github.com/project-devops-local/jenkins-dsl.git')
+                          }
+                      }
+                  }
+                  scriptPath('Jenkinsfile')
+              }
+          }
+          logRotator {
+              numToKeep(5)
+          }
+      }

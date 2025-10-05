@@ -1,0 +1,48 @@
+
+jenkins:
+  systemMessage: Jenkins de porvenir configurado por Jcasc
+  mode: NORMAL
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: ${JENKINS_ADMIN_ID}
+         password: ${JENKINS_ADMIN_PASSWORD}
+
+  authorizationStrategy:
+    roleBased:
+      roles:
+        global:
+          - name: "admin"
+            description: "Jenkins administrators"
+            permissions:
+              - "Overall/Administer"
+            entries:
+              - user: "admin"
+          - name: "readonly"
+            description: "Read-only users"
+            permissions:
+              - "Overall/Read"
+              - "Job/Read"
+            entries:
+              - user: "authenticated"
+security:
+  scriptApproval:
+    approvedSignatures:
+      - "method groovy.lang.GroovyObject invokeMethod java.lang.String java.lang.Object"
+      - "method groovy.sql.Sql close"
+      - "method groovy.sql.Sql rows java.lang.String"
+      - "method io.jenkins.plugins.casc.ConfigurationAsCode configure"
+      - "staticMethod groovy.sql.Sql newInstance java.lang.String java.lang.String java.lang.String java.lang.String"
+      - "staticMethod io.jenkins.plugins.casc.ConfigurationAsCode get"
+        
+unclassified:
+  globalLibraries:
+    libraries:
+      - name: "shared-library"
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "https://github.com/project-devops-local/shared-library.git"
+                credentialsId: "git-creds-devops"
